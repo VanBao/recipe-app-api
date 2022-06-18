@@ -18,13 +18,17 @@ RUN python -m venv /py && \
     /py/bin/pip install -r /tmp/requirements.txt && \
     if [ $DEV = "true" ]; \
         then /py/bin/pip install -r /tmp/requirements.dev.txt ; \
-    fi && \    
+    fi && \
     rm -rf /tmp && \
     apk del .tmp-build-deps && \
     adduser \
         --disabled-password \
         --no-create-home \
-        django-user
+        django-user && \
+    mkdir -p /vol/web && \
+    chown -R django-user:django-user /vol/ && \
+    chmod -R 755 /vol/web
+
 ENV PATH="/py/bin:$PATH"
 
-USER django-user      
+USER django-user
